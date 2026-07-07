@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>솔루션D — Design Studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #B8090F;
+  --black: #0C0C0C;
+  --ink: #1C1C1A;
+  --mid: #6B6B67;
+  --dim: #A8A8A4;
+  --rule: #E4E4E0;
+  --bg: #F8F8F6;
+  --white: #FFFFFF;
+  --serif: 'Cormorant Garamond', 'Noto Serif KR', serif;
+  --sans: 'Noto Sans KR', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 64px;
+  background: rgba(255,255,255,0.96);
+  border-bottom: 1px solid var(--rule);
+  backdrop-filter: blur(8px);
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.logo-word {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.logo-mark {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 2px 6px;
+  line-height: 1;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--ink); }
+
+.nav-contact {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--ink);
+  text-decoration: none;
+  padding: 11px 28px;
+  transition: background 0.2s;
+}
+
+.nav-contact:hover { background: var(--red); }
+
+/* ── HERO (1단) ── */
+.hero {
+  min-height: 100vh;
+  padding-top: 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;
+}
+
+.hero-image-area {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: 0;
+}
+
+/* 이미지 업로드 후 아래 display:none 제거하고 img 태그 src 채워주세요 */
+.hero-image-area img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.18;
+  display: none;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 1;
+  padding: 0 64px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: calc(100vh - 88px);
+}
+
+.hero-meta {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--dim);
+  line-height: 2.2;
+  margin-bottom: 40px;
+}
+
+.hero-headline {
+  font-family: var(--serif);
+  font-size: clamp(32px, 3.8vw, 56px);
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin-bottom: 40px;
+  max-width: 560px;
+}
+
+.hero-headline em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.hero-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.hero-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--mid);
+  line-height: 2;
+  border-left: 1px solid var(--rule);
+  padding-left: 24px;
+  max-width: 300px;
+}
+
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.hero-link::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s;
+}
+
+.hero-link:hover { color: var(--red); }
+.hero-link:hover::before { width: 48px; }
+
+/* ── STRIP ── */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--rule);
+}
+
+.strip-item {
+  padding: 40px 64px;
+  border-right: 1px solid var(--rule);
+}
+
+.strip-item:last-child { border-right: none; }
+
+.strip-n {
+  font-family: var(--serif);
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.strip-n sup {
+  font-size: 20px;
+  color: var(--red);
+  vertical-align: super;
+}
+
+.strip-l {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* ── WORK ── */
+.work-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 64px 64px 48px;
+}
+
+.section-eyebrow {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+
+.work-item {
+  aspect-ratio: 4/3;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 32px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.work-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--red);
+  transition: width 0.4s ease;
+}
+
+.work-item:hover { background: var(--white); }
+.work-item:hover::after { width: 100%; }
+
+/* 작업물 이미지 (업로드 후 활성화) */
+.work-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: none;
+}
+
+.work-item:hover .work-thumb { opacity: 0.12; }
+
+.work-idx {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--dim);
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.work-info {
+  position: relative;
+  z-index: 1;
+}
+
+.work-client {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.work-type {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.work-hover-label {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1;
+}
+
+.work-item:hover .work-hover-label { opacity: 1; }
+
+/* 더 보기 버튼 */
+.work-more-wrap {
+  padding: 48px 64px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: none;
+  border: 1px solid var(--rule);
+  padding: 16px 48px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.work-more-btn:hover {
+  background: var(--ink);
+  color: var(--white);
+  border-color: var(--ink);
+}
+
+/* 숨겨진 추가 work items */
+.work-hidden { display: none; }
+
+/* ── MODAL ── */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(12,12,12,0.88);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.modal-backdrop.active { display: flex; }
+
+.modal {
+  background: var(--white);
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.modal-image {
+  background: var(--bg);
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.modal-image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px;
+  text-align: center;
+}
+
+.modal-image-placeholder .ph-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--ink);
+}
+
+.modal-image-placeholder .ph-sub {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.modal-content {
+  padding: 56px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modal-meta {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 32px;
+}
+
+.modal-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--mid);
+  line-height: 2;
+  margin-bottom: 32px;
+  flex-grow: 1;
+}
+
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.modal-tag {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mid);
+  border: 1px solid var(--rule);
+  padding: 6px 14px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--ink);
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.modal-close:hover { background: var(--ink); color: var(--white); }
+
+/* ── CLIENTS ── */
+.clients-section {
+  border-bottom: 1px solid var(--rule);
+  padding: 64px;
+}
+
+.clients-label {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 48px;
+}
+
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+
+.client-cell {
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 28px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 88px;
+  transition: background 0.2s;
+  cursor: default;
+}
+
+/* 로고 이미지 모드 */
+.client-cell img {
+  max-width: 80%;
+  max-height: 36px;
+  object-fit: contain;
+  filter: grayscale(100%) opacity(0.45);
+  transition: filter 0.25s;
+  display: none; /* PNG 업로드 후 display:block으로 변경 */
+}
+
+.client-cell:hover img { filter: grayscale(0%) opacity(1); }
+.client-cell:hover { background: var(--bg); }
+
+/* 로고 없을 때 텍스트 */
+.client-cell-text {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--dim);
+  text-align: center;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.client-cell:hover .client-cell-text { color: var(--ink); }
+
+/* ── ABOUT / STUDIO ── */
+.about-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+
+.about-left {
+  padding: 96px 64px;
+  border-right: 1px solid var(--rule);
+}
+
+.about-right {
+  padding: 96px 64px;
+  background: var(--bg);
+}
+
+.about-eyebrow {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 48px;
+}
+
+.about-statement {
+  font-family: var(--serif);
+  font-size: clamp(28px, 2.8vw, 40px);
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  margin-bottom: 40px;
+}
+
+.about-statement em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.about-body {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--mid);
+  line-height: 2.2;
+  margin-bottom: 48px;
+}
+
+.about-cert {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mid);
+  border: 1px solid var(--rule);
+  padding: 12px 20px;
+}
+
+.cert-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+.services-list { display: flex; flex-direction: column; }
+
+.service-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+  gap: 24px;
+}
+
+.service-row:first-child { border-top: 1px solid var(--rule); }
+
+.service-name {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--ink);
+}
+
+.service-desc {
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--dim);
+  letter-spacing: 0.5px;
+  text-align: right;
+  max-width: 200px;
+  line-height: 1.6;
+}
+
+/* ── CONTACT ── */
+.contact-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+
+.contact-left {
+  padding: 96px 64px;
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.contact-right {
+  padding: 96px 64px;
+  background: var(--bg);
+}
+
+.contact-headline {
+  font-family: var(--serif);
+  font-size: clamp(28px, 2.8vw, 40px);
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  margin-bottom: 48px;
+}
+
+.contact-headline em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.contact-info { display: flex; flex-direction: column; }
+
+.contact-row {
+  display: flex;
+  gap: 0;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.contact-row:first-child { border-top: 1px solid var(--rule); }
+
+.contact-key {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  min-width: 72px;
+  padding-top: 2px;
+}
+
+.contact-val {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1.8;
+}
+
+.form-group { margin-bottom: 32px; }
+
+.form-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 12px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder { color: var(--dim); }
+.form-input:focus,
+.form-textarea:focus { border-color: var(--ink); }
+.form-textarea { height: 100px; resize: none; }
+
+.form-submit {
+  margin-top: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--ink);
+  border: none;
+  padding: 18px 48px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.form-submit:hover { background: var(--red); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 32px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--rule);
+}
+
+.footer-logo {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.footer-copy {
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--dim);
+  letter-spacing: 1px;
+}
+
+
+
+/* -- MOCKUP -- */
+.work-mockup {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0.55;
+  transition: opacity 0.3s;
+}
+.work-item:hover .work-mockup { opacity: 0.75; }
+.work-mockup svg { width: 100%; height: 100%; object-fit: contain; }
+
+/* 모달 목업 */
+.modal-mockup {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+.modal-mockup svg { width: 100%; max-height: 320px; object-fit: contain; }
+
+/* -- FILTER TABS -- */
+.filter-tabs { display:flex; gap:0; padding:0 64px; border-bottom:1px solid var(--rule); overflow-x:auto; }
+.filter-tab { font-size:11px; font-weight:400; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); padding:16px 24px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; white-space:nowrap; background:none; border-top:none; border-left:none; border-right:none; font-family:var(--sans); }
+.filter-tab:hover { color:var(--ink); }
+.filter-tab.active { color:var(--red); border-bottom-color:var(--red); }
+.loading-state { grid-column:1/-1; display:flex; align-items:center; justify-content:center; padding:80px; gap:12px; font-size:12px; font-weight:300; letter-spacing:2px; text-transform:uppercase; color:var(--dim); }
+.loading-dot { width:6px; height:6px; border-radius:50%; background:var(--red); animation:pulse 1.2s ease-in-out infinite; }
+.loading-dot:nth-child(2) { animation-delay:0.2s; }
+.loading-dot:nth-child(3) { animation-delay:0.4s; }
+@keyframes pulse { 0%,100%{opacity:0.2;transform:scale(0.8)} 50%{opacity:1;transform:scale(1)} }
+.empty-state { grid-column:1/-1; padding:80px; text-align:center; font-size:13px; font-weight:300; color:var(--dim); }
+
+
+/* -- THUMBNAIL HOVER TRANSITION -- */
+.work-thumb-default {
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+.work-thumb-hover {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.work-item:hover .work-thumb-default { opacity: 0; }
+.work-item:hover .work-thumb-hover { opacity: 1; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  .hero-overlay { padding: 0 24px 56px; }
+  .strip { grid-template-columns: 1fr 1fr; }
+  .strip-item { padding: 32px 24px; }
+  .work-header { padding: 48px 24px 32px; }
+  .work-grid { grid-template-columns: 1fr 1fr; }
+  .work-more-wrap { padding: 40px 24px; }
+  .clients-section { padding: 48px 24px; }
+  .clients-grid { grid-template-columns: repeat(4, 1fr); }
+  .about-section { grid-template-columns: 1fr; }
+  .about-left { border-right: none; border-bottom: 1px solid var(--rule); padding: 64px 24px; }
+  .about-right { padding: 64px 24px; }
+  .contact-section { grid-template-columns: 1fr; }
+  .contact-left { border-right: none; border-bottom: 1px solid var(--rule); padding: 64px 24px; }
+  .contact-right { padding: 64px 24px; }
+  footer { padding: 24px; flex-direction: column; gap: 12px; }
+  .modal { grid-template-columns: 1fr; }
+  .modal-image { min-height: 240px; }
+  .modal-content { padding: 40px 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <span class="logo-word">Solution</span>
+    <span class="logo-mark">D</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">Studio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-contact">문의</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-image-area">
+    <!-- PNG/JPG 이미지 준비되면 src 채워주세요 -->
+    <img src="" alt="">
+  </div>
+  <div class="hero-overlay">
+    <div class="hero-meta">
+      Seoul, Korea · Est. 2009 · Design Studio
+    </div>
+    <h1 class="hero-headline">
+      디자인을 넘어,<br>
+      본질을 <em>꿰뚫는다.</em>
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-sub">
+        기업 홍보물, CI/BI, 광고 크리에이티브.<br>
+        15년, 100개 이상의 기업과 함께한<br>
+        디자인 스튜디오.
+      </p>
+      <a href="#work" class="hero-link">Work 보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-item">
+    <div class="strip-n">15<sup>yr</sup></div>
+    <div class="strip-l">업력</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-n">100<sup>+</sup></div>
+    <div class="strip-l">클라이언트</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-n">1K<sup>+</sup></div>
+    <div class="strip-l">프로젝트</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-n">KD<sup>*</sup></div>
+    <div class="strip-l">한국디자인진흥원 인증</div>
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <div class="work-header">
+    <div class="section-eyebrow">Selected Work</div>
+    <div id="workCount" style="font-size:11px;color:var(--dim);letter-spacing:1px;"></div>
+  </div>
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-tab active" data-filter="all" onclick="filterWork('all', this)">All</button>
+  </div>
+  <div class="work-grid" id="workGrid">
+    <div class="loading-state">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
+  </div>
+  <div class="work-more-wrap" id="moreWrap" style="display:none;">
+    <button class="work-more-btn" id="moreBtn" onclick="toggleMore()">더 보기 +</button>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<div class="clients-section" id="clients">
+  <div class="clients-label">Clients — 100+ 기업과 함께</div>
+  <div class="clients-grid">
+    <!-- PNG 로고 파일 받으면 img src 채워주세요. 그 전까지 텍스트 표시 -->
+    <div class="client-cell"><img src="" alt="KT"><span class="client-cell-text">KT</span></div>
+    <div class="client-cell"><img src="" alt="SECUI"><span class="client-cell-text">SECUI</span></div>
+    <div class="client-cell"><img src="" alt="삼성바이오로직스"><span class="client-cell-text">삼성<br>바이오로직스</span></div>
+    <div class="client-cell"><img src="" alt="TONYMOLY"><span class="client-cell-text">TONYMOLY</span></div>
+    <div class="client-cell"><img src="" alt="D'LIVE"><span class="client-cell-text">D'LIVE</span></div>
+    <div class="client-cell"><img src="" alt="SK케미칼"><span class="client-cell-text">SK케미칼</span></div>
+    <div class="client-cell"><img src="" alt="보령제약"><span class="client-cell-text">보령제약</span></div>
+    <div class="client-cell"><img src="" alt="한국암웨이"><span class="client-cell-text">한국암웨이</span></div>
+    <div class="client-cell"><img src="" alt="SC제일은행"><span class="client-cell-text">SC제일은행</span></div>
+    <div class="client-cell"><img src="" alt="레이저옵텍"><span class="client-cell-text">레이저옵텍</span></div>
+    <div class="client-cell"><img src="" alt="콜마"><span class="client-cell-text">콜마</span></div>
+    <div class="client-cell"><img src="" alt="VISANG"><span class="client-cell-text">VISANG</span></div>
+    <div class="client-cell"><img src="" alt="이투스"><span class="client-cell-text">이투스</span></div>
+    <div class="client-cell"><img src="" alt="이감"><span class="client-cell-text">이감</span></div>
+    <div class="client-cell"><img src="" alt="전라남도청"><span class="client-cell-text">전라남도청</span></div>
+    <div class="client-cell"><img src="" alt="KDI정책대학원"><span class="client-cell-text">KDI<br>정책대학원</span></div>
+    <div class="client-cell"><img src="" alt="APEC기후센터"><span class="client-cell-text">APEC<br>기후센터</span></div>
+    <div class="client-cell"><img src="" alt="세종시"><span class="client-cell-text">세종시</span></div>
+    <div class="client-cell"><img src="" alt="한국도자재단"><span class="client-cell-text">한국도자재단</span></div>
+    <div class="client-cell"><img src="" alt="DRB동일"><span class="client-cell-text">DRB동일</span></div>
+    <div class="client-cell"><img src="" alt="교보타워"><span class="client-cell-text">교보타워</span></div>
+  </div>
+</div>
+
+<!-- ABOUT / STUDIO -->
+<section id="about" class="about-section">
+  <div class="about-left">
+    <div class="about-eyebrow">Studio</div>
+    <p class="about-statement">
+      디자인을 넘어,<br>
+      전략과 기획,<br>
+      카피까지.<br>
+      <em>본질을 건드립니다.</em>
+    </p>
+    <p class="about-body">
+      솔루션D는 2009년 설립 이래 KT, 삼성바이오로직스, 토니모리, 시큐아이 등 국내 주요 기업의 인쇄제작물, CI/BI, 광고 크리에이티브를 담당해온 디자인 스튜디오입니다.<br><br>
+      단순히 시안을 만들어 납품하는 것이 아닙니다. 담당자가 어떤 맥락에서 무엇을 필요로 하는지, 그 이면의 목적이 무엇인지를 먼저 묻습니다. 기획 단계부터 카피 방향, 비주얼 전략까지 통합적으로 제안하고, 그것이 실제 결과물로 이어지도록 끝까지 책임집니다.<br><br>
+      15년간 100개 이상의 기업과 일하며 쌓은 것은 포트폴리오만이 아닙니다. 업종마다 다른 언어, 조직마다 다른 기준, 담당자마다 다른 고민을 읽는 감각입니다. 그 감각이 솔루션D의 진짜 자산입니다.
+    </p>
+    <div class="about-cert">
+      <span class="cert-dot"></span>
+      한국디자인진흥원 인증 디자인전문회사
+    </div>
+  </div>
+  <div class="about-right">
+    <div class="about-eyebrow">Services</div>
+    <div class="services-list">
+      <div class="service-row">
+        <span class="service-name">기업 홍보물 제작</span>
+        <span class="service-desc">Brochure · Catalogue · Datasheet · PPT</span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">CI / BI 개발</span>
+        <span class="service-desc">Identity · Guide System · Naming</span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">광고 크리에이티브</span>
+        <span class="service-desc">Print · OOH · Magazine · Campaign</span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">제안서 디자인</span>
+        <span class="service-desc">Proposal · IR · Report</span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">전시 / 부스 그래픽</span>
+        <span class="service-desc">Conference · Exhibition · Booth</span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">정기간행물 편집</span>
+        <span class="service-desc">Newsletter · Magazine · Annual Report</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="contact-left">
+    <div>
+      <div class="about-eyebrow" style="margin-bottom: 32px;">Contact</div>
+      <h2 class="contact-headline">
+        프로젝트가<br>
+        있으신가요?<br>
+        <em>연락주세요.</em>
+      </h2>
+    </div>
+    <div class="contact-info">
+      <div class="contact-row">
+        <span class="contact-key">Email</span>
+        <span class="contact-val">your@email.com</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-key">Tel</span>
+        <span class="contact-val">010-0000-0000</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-key">Location</span>
+        <span class="contact-val">서울특별시 OO구 OO로</span>
+      </div>
+    </div>
+  </div>
+  <div class="contact-right">
+    <div class="form-group">
+      <label class="form-label">Company / Name</label>
+      <input class="form-input" type="text" placeholder="OO주식회사 홍길동">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contact</label>
+      <input class="form-input" type="text" placeholder="이메일 또는 전화번호">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Project Type</label>
+      <input class="form-input" type="text" placeholder="브로셔, CI 개발, 제안서 디자인 등">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Brief</label>
+      <textarea class="form-textarea" placeholder="프로젝트에 대해 간단히 알려주세요."></textarea>
+    </div>
+    <button class="form-submit">Send →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">Solution D</a>
+  <p class="footer-copy">© 2026 솔루션D · Seoul · Est. 2009 · 한국디자인진흥원 인증</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-image" id="modalImageArea">
+      <div class="modal-image-placeholder" id="modalPlaceholder">
+        <div class="ph-title" id="modalPhTitle"></div>
+        <div class="ph-type" id="modalPhType"></div>
+      </div>
+    </div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModalDirect()">&#x2715;</button>
+      <div class="modal-industry" id="modalIndustry"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-type" id="modalType"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-tags" id="modalTags"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">Solution D</a>
+  <p class="footer-copy">© 2026 솔루션D · Seoul · Est. 2009 · 한국디자인진흥원 인증</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-image" id="modalImage">
+      <div class="modal-image-placeholder" id="modalPlaceholder">
+        <div class="ph-title" id="modalPlaceholderTitle"></div>
+        <div class="ph-sub">이미지 준비 중</div>
+      </div>
+      <img id="modalImg" src="" alt="">
+    </div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      <div>
+        <div class="modal-meta" id="modalMeta"></div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <div class="modal-tags" id="modalTags"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── 목업 SVG 라이브러리 ──────────────────────────
+const MOCKUPS = {
+  'Brochure': '<svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#EFEFED"/><rect x="24" y="20" width="122" height="180" fill="#fff" style="filter:drop-shadow(2px 2px 3px rgba(0,0,0,0.12))"/><rect x="24" y="20" width="122" height="48" fill="#1C1C1A"/><rect x="36" y="34" width="60" height="3" fill="rgba(255,255,255,0.6)" rx="1"/><rect x="36" y="42" width="40" height="2" fill="rgba(255,255,255,0.3)" rx="1"/><rect x="36" y="80" width="98" height="2" fill="#E4E4E0" rx="1"/><rect x="36" y="88" width="80" height="2" fill="#E4E4E0" rx="1"/><rect x="36" y="96" width="90" height="2" fill="#E4E4E0" rx="1"/><rect x="36" y="120" width="98" height="60" fill="#F4F4F2" rx="2"/><rect x="154" y="20" width="122" height="180" fill="#fff" style="filter:drop-shadow(2px 2px 3px rgba(0,0,0,0.12))"/><rect x="166" y="32" width="98" height="68" fill="#F4F4F2" rx="2"/><rect x="166" y="112" width="70" height="3" fill="#1C1C1A" rx="1"/><rect x="166" y="120" width="98" height="2" fill="#E4E4E0" rx="1"/><rect x="166" y="128" width="80" height="2" fill="#E4E4E0" rx="1"/><rect x="166" y="136" width="90" height="2" fill="#E4E4E0" rx="1"/><rect x="166" y="168" width="30" height="8" fill="#B8090F" rx="1"/></svg>',
+  'Poster': '<svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#EFEFED"/><rect x="95" y="12" width="130" height="196" fill="#fff" style="filter:drop-shadow(3px 3px 4px rgba(0,0,0,0.15))"/><rect x="95" y="12" width="130" height="90" fill="#1C1C1A"/><rect x="107" y="116" width="80" height="5" fill="#1C1C1A" rx="1"/><rect x="107" y="126" width="60" height="3" fill="#B8090F" rx="1"/><rect x="107" y="136" width="106" height="2" fill="#E4E4E0" rx="1"/><rect x="107" y="142" width="90" height="2" fill="#E4E4E0" rx="1"/><rect x="107" y="148" width="100" height="2" fill="#E4E4E0" rx="1"/><rect x="107" y="162" width="106" height="28" fill="#F4F4F2" rx="2"/><rect x="107" y="194" width="60" height="6" fill="#1C1C1A" rx="1"/></svg>',
+  'Catalogue': '<svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#EFEFED"/><rect x="16" y="28" width="134" height="164" fill="#fff" style="filter:drop-shadow(2px 2px 3px rgba(0,0,0,0.1))"/><rect x="170" y="28" width="134" height="164" fill="#fff" style="filter:drop-shadow(2px 2px 3px rgba(0,0,0,0.1))"/><line x1="160" y1="28" x2="160" y2="192" stroke="#E4E4E0" stroke-width="2"/><rect x="28" y="40" width="110" height="72" fill="#F4F4F2" rx="2"/><rect x="28" y="122" width="70" height="3" fill="#1C1C1A" rx="1"/><rect x="28" y="130" width="110" height="2" fill="#E4E4E0" rx="1"/><rect x="28" y="137" width="90" height="2" fill="#E4E4E0" rx="1"/><rect x="182" y="40" width="50" height="50" fill="#F4F4F2" rx="2"/><rect x="240" y="40" width="50" height="50" fill="#1C1C1A" rx="2"/><rect x="182" y="98" width="50" height="50" fill="#B8090F" rx="2"/><rect x="240" y="98" width="50" height="50" fill="#F4F4F2" rx="2"/></svg>',
+  'Proposal': '<svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#EFEFED"/><rect x="20" y="20" width="280" height="158" fill="#1C1C1A" rx="4" style="filter:drop-shadow(0 4px 6px rgba(0,0,0,0.2))"/><rect x="28" y="28" width="264" height="142" fill="#fff" rx="2"/><rect x="28" y="28" width="264" height="52" fill="#1C1C1A" rx="2"/><rect x="42" y="42" width="100" height="5" fill="rgba(255,255,255,0.8)" rx="1"/><rect x="42" y="52" width="70" height="3" fill="#B8090F" rx="1"/><rect x="42" y="94" width="70" height="3" fill="#1C1C1A" rx="1"/><rect x="42" y="102" width="110" height="2" fill="#E4E4E0" rx="1"/><rect x="42" y="108" width="90" height="2" fill="#E4E4E0" rx="1"/><rect x="170" y="90" width="110" height="78" fill="#F4F4F2" rx="2"/><rect x="148" y="178" width="24" height="16" fill="#1C1C1A" rx="1"/><rect x="124" y="192" width="72" height="6" fill="#1C1C1A" rx="2"/></svg>',
+  'CI': '<svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#EFEFED"/><rect x="16" y="60" width="160" height="100" fill="#1C1C1A" rx="3" style="filter:drop-shadow(2px 4px 5px rgba(0,0,0,0.15))"/><rect x="28" y="76" width="40" height="40" fill="#B8090F" rx="2"/><rect x="76" y="82" width="80" height="5" fill="rgba(255,255,255,0.8)" rx="1"/><rect x="76" y="92" width="55" height="3" fill="rgba(255,255,255,0.4)" rx="1"/><rect x="28" y="136" width="100" height="2" fill="rgba(255,255,255,0.3)" rx="1"/><rect x="144" y="72" width="160" height="100" fill="#fff" rx="3" style="filter:drop-shadow(2px 4px 5px rgba(0,0,0,0.15))"/><rect x="196" y="108" width="60" height="28" fill="#1C1C1A" rx="2"/><rect x="156" y="158" width="80" height="2" fill="#E4E4E0" rx="1"/></svg>',
+  'OOH': '<svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#EFEFED"/><rect x="60" y="20" width="200" height="140" fill="#2A2A28" rx="3" style="filter:drop-shadow(3px 4px 5px rgba(0,0,0,0.18))"/><rect x="68" y="28" width="184" height="124" fill="#fff" rx="1"/><rect x="68" y="28" width="184" height="70" fill="#1C1C1A" rx="1"/><rect x="84" y="50" width="100" height="6" fill="rgba(255,255,255,0.85)" rx="1"/><rect x="84" y="62" width="70" height="4" fill="#B8090F" rx="1"/><rect x="84" y="110" width="152" height="2" fill="#E4E4E0" rx="1"/><rect x="84" y="130" width="60" height="10" fill="#1C1C1A" rx="1"/><rect x="108" y="160" width="12" height="48" fill="#2A2A28" rx="1"/><rect x="200" y="160" width="12" height="48" fill="#2A2A28" rx="1"/><rect x="80" y="204" width="160" height="4" fill="#2A2A28" rx="1"/></svg>',
+  'Booth': '<svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#EFEFED"/><rect x="30" y="20" width="260" height="140" fill="#1C1C1A"/><rect x="50" y="40" width="100" height="6" fill="rgba(255,255,255,0.8)" rx="1"/><rect x="50" y="52" width="70" height="4" fill="#B8090F" rx="1"/><rect x="50" y="68" width="220" height="1" fill="rgba(255,255,255,0.1)"/><rect x="170" y="36" width="100" height="80" fill="rgba(255,255,255,0.05)" rx="2"/><rect x="80" y="155" width="160" height="40" fill="#2E2E2C" rx="2"/><rect x="30" y="192" width="260" height="4" fill="#D0D0CC" rx="1"/></svg>',
+  'default': '<svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#EFEFED"/><rect x="40" y="30" width="240" height="160" fill="#fff" style="filter:drop-shadow(2px 3px 4px rgba(0,0,0,0.12))" rx="2"/><rect x="40" y="30" width="240" height="56" fill="#1C1C1A" rx="2"/><rect x="56" y="46" width="80" height="4" fill="rgba(255,255,255,0.7)" rx="1"/><rect x="56" y="55" width="50" height="3" fill="#B8090F" rx="1"/><rect x="56" y="102" width="80" height="4" fill="#1C1C1A" rx="1"/><rect x="56" y="112" width="208" height="2" fill="#E4E4E0" rx="1"/><rect x="56" y="119" width="180" height="2" fill="#E4E4E0" rx="1"/><rect x="56" y="150" width="208" height="28" fill="#F4F4F2" rx="2"/></svg>'
+};
+
+function getMockupKey(tags) {
+  if (!tags) return 'default';
+  const t = tags.toLowerCase();
+  if (t.includes('brochure')) return 'Brochure';
+  if (t.includes('poster') || t.includes('ad')) return 'Poster';
+  if (t.includes('catalogue') || t.includes('catalog')) return 'Catalogue';
+  if (t.includes('proposal') || t.includes('ppt') || t.includes('ir')) return 'Proposal';
+  if (t.includes('ci') || t.includes('bi') || t.includes('identity')) return 'CI';
+  if (t.includes('ooh') || t.includes('transit')) return 'OOH';
+  if (t.includes('booth') || t.includes('exhibition')) return 'Booth';
+  return 'default';
+}
+
+// ── 설정 ──────────────────────────────────────────
+const SHEET_ID = '2PACX-1vSwMBXXKn2dR9KauzmBSgTdGtyiIKzqnihJ0K0syxCJOf3UlkmL-lObOYdParrRYraNvrPlOtNQU7N9';
+    // CSV_URL은 아래 loadSheets 함수에서 정의됨
+const ITEMS_FIRST = 6;   // 처음 보여줄 개수
+const ITEMS_MORE  = 6;   // 더 보기 클릭 시 추가 개수
+
+// ── 상태 ──────────────────────────────────────────
+let allData       = [];
+let filteredData  = [];
+let currentFilter = 'all';
+let showCount     = ITEMS_FIRST;
+
+// ── CSV 파싱 ──────────────────────────────────────
+function parseCSV(text) {
+  // BOM 제거 및 줄바꿈 정규화
+  text = text.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+
+  function splitLine(line) {
+    const vals = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') {
+        if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+        else { inQ = !inQ; }
+      } else if (c === ',' && !inQ) {
+        vals.push(cur.trim());
+        cur = '';
+      } else {
+        cur += c;
+      }
+    }
+    vals.push(cur.trim());
+    return vals;
+  }
+
+  const headers = splitLine(lines[0]).map(h => h.replace(/"/g,'').trim().toLowerCase());
+  const results = lines.slice(1).map(line => {
+    if (!line.trim()) return null;
+    const vals = splitLine(line);
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = (vals[i] || '').replace(/^"|"$/g, '').trim());
+    return obj;
+  }).filter(r => r && (r.visible === 'Y' || r.visible === 'y' || r.visible === 'YES'));
+  return results;
+}
+
+// ── 필터 탭 생성 ──────────────────────────────────
+function buildFilterTabs(data) {
+  const industries = [...new Set(data.map(d => d.industry).filter(Boolean))];
+  const tabs = document.getElementById('filterTabs');
+  industries.forEach(ind => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-tab';
+    btn.dataset.filter = ind;
+    btn.textContent = ind;
+    btn.onclick = () => filterWork(ind, btn);
+    tabs.appendChild(btn);
+  });
+}
+
+// ── 필터 ──────────────────────────────────────────
+function filterWork(filter, btn) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = filter;
+  showCount = ITEMS_FIRST;
+  filteredData = filter === 'all' ? [...allData] : allData.filter(d => d.industry === filter);
+  renderGrid();
+}
+
+// ── 그리드 렌더링 ─────────────────────────────────
+function renderGrid() {
+  const grid = document.getElementById('workGrid');
+  const moreWrap = document.getElementById('moreWrap');
+  const moreBtn  = document.getElementById('moreBtn');
+  const countEl  = document.getElementById('workCount');
+
+  if (filteredData.length === 0) {
+    grid.innerHTML = '<div class="empty-state">작업물이 없습니다.</div>';
+    moreWrap.style.display = 'none';
+    return;
+  }
+
+  const visible = filteredData.slice(0, showCount);
+  countEl.textContent = `${filteredData.length} projects`;
+
+  grid.innerHTML = visible.map((d) => {
+    const idx = allData.indexOf(d);
+    const num = String(idx + 1).padStart(2, '0');
+    const mockupKey = getMockupKey(d.tags);
+    const mockupSvg = MOCKUPS[mockupKey] || MOCKUPS['default'];
+    const mediaHtml = d.image_url
+      ? `<img class="work-thumb-img work-thumb-default" src="${d.image_url}" alt="${d.client}" onerror="this.style.display='none'">${d.image_hover ? `<img class="work-thumb-img work-thumb-hover" src="${d.image_hover}" alt="${d.client} detail">` : ''}`
+      : `<div class="work-mockup">${mockupSvg}</div>`;
+    return `<div class="work-item" onclick="openModal(${idx})">${mediaHtml}<span class="work-idx">${num}</span><span class="work-hover-label">View &#x2192;</span><div class="work-info"><div class="work-client">${d.client}</div><div class="work-type">${d.type}</div></div></div>`;
+  }).join('');
+
+  if (filteredData.length > showCount) {
+    moreWrap.style.display = 'flex';
+    moreBtn.textContent = '더 보기 +';
+    moreBtn.disabled = false;
+  } else {
+    if (showCount > ITEMS_FIRST) {
+      moreWrap.style.display = 'flex';
+      moreBtn.textContent = '접기 −';
+    } else {
+      moreWrap.style.display = 'none';
+    }
+  }
+}
+
+// ── 더 보기 ───────────────────────────────────────
+function toggleMore() {
+  if (showCount >= filteredData.length) {
+    showCount = ITEMS_FIRST;
+  } else {
+    showCount = Math.min(showCount + ITEMS_MORE, filteredData.length);
+  }
+  renderGrid();
+}
+
+// ── 모달 ──────────────────────────────────────────
+function openModal(idx) {
+  const d = allData[idx];
+  document.getElementById('modalIndustry').textContent = d.industry;
+  document.getElementById('modalTitle').textContent    = d.client;
+  document.getElementById('modalType').textContent     = d.type;
+  document.getElementById('modalDesc').textContent     = d.desc;
+  document.getElementById('modalPhTitle').textContent  = d.client;
+  document.getElementById('modalPhType').textContent   = d.type;
+
+  const tags = d.tags ? d.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+  document.getElementById('modalTags').innerHTML = tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+
+  const imgArea = document.getElementById('modalImageArea');
+  const ph = document.getElementById('modalPlaceholder');
+  const existImg = imgArea.querySelector('img:not([id])');
+  if (existImg) existImg.remove();
+
+  if (d.image_url) {
+    const img = document.createElement('img');
+    img.src = d.image_url;
+    img.alt = d.client;
+    img.style.display = 'none';
+    img.onload  = () => { img.style.display = 'block'; ph.style.display = 'none'; };
+    img.onerror = () => { ph.style.display = 'none'; const mk = document.createElement('div'); mk.className = 'modal-mockup'; mk.innerHTML = MOCKUPS[getMockupKey(d.tags)] || MOCKUPS['default']; imgArea.appendChild(mk); };
+    imgArea.appendChild(img);
+    ph.style.display = 'none';
+  } else {
+    ph.style.display = 'none';
+    const mk = document.createElement('div');
+    mk.className = 'modal-mockup';
+    mk.innerHTML = MOCKUPS[getMockupKey(d.tags)] || MOCKUPS['default'];
+    imgArea.appendChild(mk);
+  }
+
+  document.getElementById('modalBackdrop').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalBackdrop')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modalBackdrop').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ── 초기 로드 (멀티 프록시 폴백) ─────────────────────
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/' + SHEET_ID + '/pub?gid=0&single=true&output=csv';
+
+const PROXIES = [
+  u => 'https://corsproxy.io/?' + encodeURIComponent(u),
+  u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+  u => 'https://thingproxy.freeboard.io/fetch/' + u,
+];
+
+async function fetchWithFallback(url) {
+  for (const makeProxy of PROXIES) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 6000);
+      const res = await fetch(makeProxy(url), { signal: controller.signal });
+      clearTimeout(timer);
+      if (res.ok) {
+        const text = await res.text();
+        if (text && text.length > 10) { console.log('프록시 성공:', makeProxy(url).slice(0,50)); return text; }
+      }
+    } catch(e) {
+      console.warn('프록시 실패:', e.message);
+    }
+  }
+  throw new Error('모든 프록시 실패');
+}
+
+async function loadSheets() {
+  try {
+    const text   = await fetchWithFallback(CSV_URL);
+    allData      = parseCSV(text);
+    filteredData = [...allData];
+    buildFilterTabs(allData);
+    renderGrid();
+  } catch(e) {
+    document.getElementById('workGrid').innerHTML =
+      '<div class="empty-state">데이터를 불러오는 중 오류가 발생했습니다.<br>잠시 후 다시 시도해주세요.</div>';
+    console.error('Sheets load error:', e);
+  }
+}
+
+loadSheets();
+</script>
+</body>
+</html>
