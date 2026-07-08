@@ -299,12 +299,12 @@ nav {
   inset: 0;
   background: rgba(12,12,12,0);
   transition: background 0.35s ease;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
 }
 
 .work-item:hover::after {
-  background: rgba(12,12,12,0.65);
+  background: rgba(12,12,12,0.72);
 }
 
 .work-item::after {
@@ -343,7 +343,7 @@ nav {
   position: absolute;
   top: 24px;
   left: 28px;
-  z-index: 2;
+  z-index: 3;
   opacity: 0;
   transition: opacity 0.35s ease;
 }
@@ -352,7 +352,7 @@ nav {
 
 .work-info {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   padding: 20px 28px 24px;
   transform: translateY(8px);
   opacity: 0;
@@ -391,7 +391,7 @@ nav {
   color: rgba(255,255,255,0.7);
   opacity: 0;
   transition: opacity 0.35s ease;
-  z-index: 2;
+  z-index: 3;
 }
 
 .work-item:hover .work-hover-label { opacity: 1; }
@@ -925,7 +925,6 @@ footer {
   object-fit: cover;
   object-position: center;
   opacity: 1;
-  transition: opacity 0.4s ease;
   z-index: 0;
 }
 .work-thumb-hover {
@@ -937,9 +936,8 @@ footer {
   object-position: center;
   opacity: 0;
   transition: opacity 0.4s ease;
-  z-index: 1;
+  z-index: 0;
 }
-.work-item:hover .work-thumb-default { opacity: 0; }
 .work-item:hover .work-thumb-hover { opacity: 1; }
 
 /* ── RESPONSIVE ── */
