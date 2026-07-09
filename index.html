@@ -148,32 +148,34 @@ nav {
   display: block;
 }
 
-/* 슬라이드별 카피 위치 — 이미지 구도에 맞게 개별 지정 */
+/* 슬라이드별 카피 위치 */
 .hero-slide-copy {
   position: absolute;
   z-index: 2;
-  max-width: 40%;
+  max-width: 42%;
 }
 
-/* 슬라이드 1(연고): 중앙 왼쪽 → 오른쪽 정렬로 변경 */
+/* 슬라이드 1(연고): 피사체 오른쪽 → 카피 왼쪽, 상단 */
 .hero-slide[data-slide="0"] .hero-slide-copy {
-  left: 38%;
-  top: 22%;
+  left: 32%;
+  top: 20%;
   text-align: right;
 }
 
-/* 슬라이드 2(조미료): 중앙 오른쪽 → 왼쪽 정렬로 변경 */
+/* 슬라이드 2(조미료): 피사체 왼쪽 → 카피 오른쪽, 중앙 살짝 위 */
 .hero-slide[data-slide="1"] .hero-slide-copy {
-  right: 38%;
+  right: 30%;
   left: auto;
-  top: 22%;
+  top: 40%;
+  transform: translateY(-50%);
   text-align: left;
 }
 
-/* 슬라이드 3(드링크): 중앙 왼쪽 → 오른쪽 정렬로 변경 */
+/* 슬라이드 3(드링크): 피사체 오른쪽 → 카피 왼쪽, 중앙 살짝 위 */
 .hero-slide[data-slide="2"] .hero-slide-copy {
-  left: 35%;
-  top: 22%;
+  left: 32%;
+  top: 38%;
+  transform: translateY(-50%);
   text-align: right;
 }
 
@@ -1774,9 +1776,12 @@ footer {
 
   /* HERO */
   .hero { padding-top: 92px; }
-  .hero-banner { height: 50vw; min-height: 240px; }
-  .hero-slide[data-slide="1"] .hero-slide-copy { right: 4%; text-align: right; }
-  .hero-slide-text { font-size: clamp(15px, 4vw, 22px); }
+  .hero-banner { height: 56vw; min-height: 220px; }
+  .hero-slide-copy { max-width: 52%; }
+  .hero-slide-text { font-size: clamp(14px, 3.8vw, 20px); }
+  .hero-slide[data-slide="0"] .hero-slide-copy { left: 4%; top: 12%; transform: none; }
+  .hero-slide[data-slide="1"] .hero-slide-copy { right: 4%; left: auto; top: 35%; transform: translateY(-50%); }
+  .hero-slide[data-slide="2"] .hero-slide-copy { left: 4%; top: 30%; transform: translateY(-50%); }
   .hero-overlay { padding: 28px 24px 40px; }
   .hero-headline { font-size: 32px; }
   .hero-bottom { align-items: center; }
