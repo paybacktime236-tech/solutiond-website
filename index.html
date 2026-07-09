@@ -1552,11 +1552,11 @@ footer {
   /* HERO */
   .hero-overlay {
     padding: 0 24px 48px;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
   }
   .hero-headline { font-size: 32px; }
-  .hero-bottom { align-items: flex-start; }
+  .hero-bottom { align-items: center; }
 
   /* STRIP */
   .strip {
@@ -1599,7 +1599,16 @@ footer {
     align-items: center;
     gap: 8px;
   }
-  .process-step { flex-direction: row; text-align: left; gap: 16px; width: 100%; }
+  .process-step {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    gap: 16px;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
   .process-icon { flex-shrink: 0; width: 56px; height: 56px; }
   .process-icon svg { width: 28px; height: 28px; }
   .process-arrow { transform: rotate(90deg); margin: 0 auto; }
@@ -1626,8 +1635,9 @@ footer {
 
   /* FOOTER */
   .footer-inner { padding: 48px 24px 32px; }
-  .footer-top { grid-template-columns: 1fr; gap: 40px; }
-  .footer-nav { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-top { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+  .footer-nav { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+  .footer-nav-col { align-items: center; text-align: center; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
 
   /* ABOUT section D outline */
@@ -1694,7 +1704,7 @@ footer {
   </div>
   <div class="hero-overlay">
     <div class="hero-meta">
-      Seoul, Korea · Est. 2009 · Design Studio
+      Korea · Est. 2009 · Design Studio
     </div>
     <h1 class="hero-headline">
       디자인을 넘어,<br>
