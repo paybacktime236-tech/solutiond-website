@@ -94,6 +94,8 @@ nav {
 
 .nav-contact:hover { background: var(--ink); }
 
+.mobile-sticky-cta { display: none; }
+
 /* ── HERO (1단) ── */
 .hero {
   min-height: 100vh;
@@ -1603,16 +1605,53 @@ footer {
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   /* NAV */
-  nav { padding: 16px 20px; }
-  .nav-links { display: none; }
-  .header-tagline { display: none; }
-  .logo-group { gap: 12px; }
+  nav {
+    padding: 14px 20px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+  .nav-right { display: none; }
+  .logo-group { flex-direction: column; gap: 4px; }
+  .logo svg { height: 36px; }
+  .header-tagline {
+    display: block;
+    font-size: 10px;
+    line-height: 1.5;
+    text-align: center;
+    white-space: normal;
+  }
+
+  /* 하단 고정 CTA */
+  .mobile-sticky-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 150;
+    background: var(--red);
+    color: var(--white);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px;
+    border-radius: 0 20px 20px 0;
+    box-shadow: 0 8px 24px rgba(12,12,12,0.25);
+  }
+  body { padding-bottom: 76px; }
 
   /* HERO */
+  .hero { padding-top: 104px; }
   .hero-overlay {
     padding: 0 24px 48px;
     align-items: center;
     text-align: center;
+    min-height: calc(100vh - 104px);
   }
   .hero-headline { font-size: 32px; }
   .hero-bottom { align-items: center; }
@@ -1659,15 +1698,12 @@ footer {
     gap: 8px;
   }
   .process-step {
-    display: grid;
-    grid-template-columns: 56px minmax(0, 240px);
+    display: inline-grid;
+    grid-template-columns: 56px auto;
     column-gap: 16px;
     row-gap: 4px;
     align-items: start;
     text-align: left;
-    width: fit-content;
-    max-width: 100%;
-    margin: 0 auto;
   }
   .process-icon {
     grid-column: 1;
@@ -1681,7 +1717,7 @@ footer {
   .process-arrow { transform: rotate(90deg); margin: 0 auto; }
   .process-num { grid-column: 2; grid-row: 1; text-align: left; }
   .process-name { grid-column: 2; grid-row: 2; font-size: 15px; text-align: left; }
-  .process-desc { grid-column: 2; grid-row: 3; text-align: left; max-width: none; }
+  .process-desc { grid-column: 2; grid-row: 3; text-align: left; max-width: 220px; }
 
   /* CONTACT */
   .contact-inner {
@@ -1765,6 +1801,8 @@ footer {
     <a href="#" class="nav-contact" onclick="openContactModal(); return false;">프로젝트 의뢰하기</a>
   </div>
 </nav>
+
+<a href="#" class="mobile-sticky-cta" onclick="openContactModal(); return false;">프로젝트 의뢰하기</a>
 
 <!-- HERO -->
 <section class="hero">
