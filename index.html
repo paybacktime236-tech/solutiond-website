@@ -240,6 +240,12 @@ nav {
   vertical-align: super;
 }
 
+.strip-n--kidp {
+  font-size: 34px;
+  letter-spacing: 4px;
+  padding-top: 6px;
+}
+
 .strip-l {
   font-size: 10px;
   font-weight: 400;
@@ -1044,13 +1050,16 @@ footer {
   margin: 0 auto;
 }
 
+.process-step { flex: 1; }
+
 .process-step {
-  flex: 1;
+  flex: unset;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 16px;
+  width: 100%;
 }
 
 .process-icon {
@@ -1211,9 +1220,9 @@ footer {
   background: var(--red);
   color: var(--white);
   border: none;
-  padding: 20px 48px;
+  padding: 14px 40px;
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 1px;
   cursor: pointer;
@@ -1385,9 +1394,9 @@ footer {
 
 .footer-top {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 80px;
-  padding-bottom: 48px;
+  grid-template-columns: 280px 1fr;
+  gap: 64px;
+  padding-bottom: 40px;
   border-bottom: 1px solid var(--rule);
   margin-bottom: 28px;
 }
@@ -1423,19 +1432,44 @@ footer {
 }
 
 .footer-nav {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.footer-nav-flat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 0;
+}
+
+.footer-nav-flat span,
+.footer-nav-flat a {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--mid);
+  text-decoration: none;
+  transition: color 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.footer-nav-flat a:hover { color: var(--ink); }
+
+.footer-nav-sep {
+  color: var(--dim);
+  font-size: 10px;
+  margin: 0 7px;
 }
 
 .footer-nav-col {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .footer-nav-title {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 500;
   letter-spacing: 2.5px;
   text-transform: uppercase;
@@ -1662,6 +1696,9 @@ footer {
   }
   .strip-item { padding: 28px 16px; }
   .strip-n { font-size: 36px; }
+  .strip-item:nth-child(3),
+  .strip-item:nth-child(4) { border-top: 1px solid var(--rule); }
+  .strip-item:nth-child(4) .strip-n--kidp { font-size: 24px; letter-spacing: 3px; padding-top: 4px; }
 
   /* WORK */
   .work-header { padding: 48px 24px 32px; max-width: 100%; }
@@ -1692,31 +1729,22 @@ footer {
   /* PROCESS */
   .process-inner { padding: 56px 24px; }
   .process-flow {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 40px 8px;
+    justify-items: center;
   }
-  .process-step {
-    display: inline-grid;
-    grid-template-columns: 56px auto;
-    column-gap: 16px;
-    row-gap: 4px;
-    align-items: start;
-    text-align: left;
-  }
-  .process-icon {
-    grid-column: 1;
-    grid-row: 1 / span 3;
-    flex-shrink: 0;
-    width: 56px;
-    height: 56px;
-    align-self: start;
-  }
+  .process-step { flex: unset; width: 100%; }
+  .process-step:nth-child(1) { grid-column: 1 / span 2; }
+  .process-step:nth-child(2) { grid-column: 3 / span 2; }
+  .process-step:nth-child(3) { grid-column: 5 / span 2; }
+  .process-step:nth-child(4) { grid-column: 2 / span 2; }
+  .process-step:nth-child(5) { grid-column: 4 / span 2; }
+  .process-icon { width: 56px; height: 56px; }
   .process-icon svg { width: 28px; height: 28px; }
-  .process-arrow { transform: rotate(90deg); margin: 0 auto; }
-  .process-num { grid-column: 2; grid-row: 1; text-align: left; }
-  .process-name { grid-column: 2; grid-row: 2; font-size: 15px; text-align: left; }
-  .process-desc { grid-column: 2; grid-row: 3; text-align: left; max-width: 220px; }
+  .process-num { text-align: center; }
+  .process-name { font-size: 13px; text-align: center; word-break: keep-all; }
+  .process-desc { max-width: 110px; text-align: center; font-size: 10px; }
 
   /* CONTACT */
   .contact-inner {
@@ -1761,14 +1789,13 @@ footer {
   .footer-logo svg { height: 44px; }
   .footer-tagline { font-size: 11px; }
   .footer-cert { font-size: 9px; margin-top: 2px; }
-  .footer-nav { grid-template-columns: 1fr 1fr; gap: 20px 16px; text-align: center; }
-  .footer-nav-col { align-items: center; text-align: center; gap: 6px; }
-  .footer-nav-col:last-child { grid-column: 1 / -1; }
-  .footer-nav-title { font-size: 9px; margin-bottom: 2px; }
-  .footer-nav-col a, .footer-nav-col span { font-size: 11px; }
+  .footer-nav { gap: 20px; text-align: center; }
+  .footer-nav-col { align-items: center; text-align: center; }
+  .footer-nav-flat { justify-content: center; }
+  .footer-nav-title { font-size: 9px; margin-bottom: 4px; }
+  .footer-nav-flat span, .footer-nav-flat a { font-size: 11px; }
   .footer-bottom { flex-direction: column; gap: 4px; text-align: center; }
   .footer-copy { font-size: 10px; }
-
   /* ABOUT section D outline */
   .about-section::after { inset: 8px; border-radius: 0 40px 40px 0; }
   .contact-section::after { display: none; }
@@ -1867,7 +1894,7 @@ footer {
     <div class="strip-l">Projects</div>
   </div>
   <div class="strip-item">
-    <div class="strip-n" style="font-size:34px;letter-spacing:4px;padding-top:6px;">KIDP</div>
+    <div class="strip-n strip-n--kidp">KIDP</div>
     <div class="strip-l">한국디자인진흥원 인증</div>
   </div>
 </div>
@@ -2108,12 +2135,6 @@ footer {
         <div class="process-desc">목적과 방향성을 함께 정의합니다.</div>
       </div>
 
-      <div class="process-arrow">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="3" fill="#B8090F" opacity="0.5"/>
-        </svg>
-      </div>
-
       <div class="process-step">
         <div class="process-icon">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2128,12 +2149,6 @@ footer {
         <div class="process-num">02</div>
         <div class="process-name">기획 & 전략</div>
         <div class="process-desc">컨셉과 비주얼 전략을 설계합니다.</div>
-      </div>
-
-      <div class="process-arrow">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="3" fill="#B8090F" opacity="0.5"/>
-        </svg>
       </div>
 
       <div class="process-step">
@@ -2154,12 +2169,6 @@ footer {
         <div class="process-desc">목적에 부합하는 시안을 제작합니다.</div>
       </div>
 
-      <div class="process-arrow">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="3" fill="#B8090F" opacity="0.5"/>
-        </svg>
-      </div>
-
       <div class="process-step">
         <div class="process-icon">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2172,12 +2181,6 @@ footer {
         <div class="process-num">04</div>
         <div class="process-name">수정 & 완성</div>
         <div class="process-desc">피드백을 반영해 완성도를 높입니다.</div>
-      </div>
-
-      <div class="process-arrow">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="3" fill="#B8090F" opacity="0.5"/>
-        </svg>
       </div>
 
       <div class="process-step">
@@ -2340,31 +2343,36 @@ footer {
       <div class="footer-nav">
         <div class="footer-nav-col">
           <div class="footer-nav-title">Services</div>
-          <a href="#about">기업 홍보물 제작</a>
-          <a href="#about">CI / BI 개발</a>
-          <a href="#about">광고 크리에이티브</a>
-          <a href="#about">제안서 디자인</a>
-          <a href="#about">전시 / 부스 그래픽</a>
-          <a href="#about">정기간행물 편집</a>
+          <div class="footer-nav-flat">
+            <span>기업 홍보물 제작</span><span class="footer-nav-sep">·</span>
+            <span>CI / BI 개발</span><span class="footer-nav-sep">·</span>
+            <span>광고 크리에이티브</span><span class="footer-nav-sep">·</span>
+            <span>제안서 디자인</span><span class="footer-nav-sep">·</span>
+            <span>전시 / 부스 그래픽</span><span class="footer-nav-sep">·</span>
+            <span>정기간행물 편집</span>
+          </div>
         </div>
         <div class="footer-nav-col">
           <div class="footer-nav-title">Quick</div>
-          <a href="#work">Portfolio</a>
-          <a href="#about">Studio</a>
-          <a href="#process">Process</a>
-          <a href="#contact">Contact</a>
+          <div class="footer-nav-flat">
+            <a href="#work">Portfolio</a><span class="footer-nav-sep">·</span>
+            <a href="#about">Studio</a><span class="footer-nav-sep">·</span>
+            <a href="#process">Process</a><span class="footer-nav-sep">·</span>
+            <a href="#contact">Contact</a>
+          </div>
         </div>
         <div class="footer-nav-col">
           <div class="footer-nav-title">Contact</div>
-          <a href="mailto:solutiond.manager@gmail.com">solutiond.manager@gmail.com</a>
-          <a href="tel:010-2704-1891">010-2704-1891</a>
-          <span>경기 성남시 수정구 위례서일로 22, 910호</span>
+          <div class="footer-nav-flat">
+            <a href="mailto:solutiond.manager@gmail.com">solutiond.manager@gmail.com</a><span class="footer-nav-sep">·</span>
+            <a href="tel:010-2704-1891">010-2704-1891</a><span class="footer-nav-sep">·</span>
+            <span>경기 성남시 수정구 위례서일로 22, 910호</span>
+          </div>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
       <p class="footer-copy">© 2026 솔루션D · Est. 2009</p>
-      <p class="footer-copy">본질을 꿰뚫는다.</p>
     </div>
   </div>
 </footer>
