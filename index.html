@@ -2704,9 +2704,9 @@ function openModal(idx) {
   const existImg = imgArea.querySelector('img:not([id])');
   if (existImg) existImg.remove();
 
-  if (d.image_url) {
+  if (d.image_url || d.image_hover) {
     const img = document.createElement('img');
-    img.src = d.image_url;
+    img.src = d.image_hover || d.image_url;
     img.alt = d.client;
     img.style.display = 'none';
     img.onload  = () => { img.style.display = 'block'; ph.style.display = 'none'; };
