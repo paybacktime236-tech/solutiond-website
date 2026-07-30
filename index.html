@@ -464,13 +464,23 @@ nav {
   transform: translateY(0);
 }
 
+.work-brand {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 8px;
+}
+
 .work-client {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 300;
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 500;
   color: var(--white);
   margin-bottom: 6px;
-  line-height: 1.2;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
 }
 
 .work-type {
@@ -585,10 +595,11 @@ nav {
 }
 
 .modal-image-placeholder .ph-title {
-  font-family: var(--serif);
-  font-size: 28px;
-  font-weight: 300;
+  font-family: var(--sans);
+  font-size: 24px;
+  font-weight: 500;
   color: var(--ink);
+  letter-spacing: -0.3px;
 }
 
 .modal-image-placeholder .ph-sub {
@@ -615,11 +626,12 @@ nav {
 }
 
 .modal-title {
-  font-family: var(--serif);
-  font-size: 36px;
-  font-weight: 300;
+  font-family: var(--sans);
+  font-size: 30px;
+  font-weight: 500;
   color: var(--ink);
-  line-height: 1.2;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
   margin-bottom: 32px;
 }
 
@@ -2661,7 +2673,7 @@ function renderGrid() {
       ? `<img class="work-thumb-img work-thumb-default" src="${d.image_url}" alt="${d.client}" onerror="this.style.display='none'">${d.image_hover ? `<img class="work-thumb-img work-thumb-hover" src="${d.image_hover}" alt="${d.client} detail">` : ''}`
       : `<div class="work-mockup">${mockupSvg}</div>`;
     const hasImg = d.image_url ? 'has-image' : '';
-    return `<div class="work-item ${hasImg}" onclick="openModal(${idx})">${mediaHtml}<div class="work-overlay"></div><span class="work-idx">${num}</span><span class="work-hover-label">View &#x2192;</span><div class="work-info" style="position:relative;z-index:3;"><div class="work-client">${d.client}</div><div class="work-type">${d.type}</div></div></div>`;
+    return `<div class="work-item ${hasImg}" onclick="openModal(${idx})">${mediaHtml}<div class="work-overlay"></div><span class="work-idx">${num}</span><span class="work-hover-label">View &#x2192;</span><div class="work-info" style="position:relative;z-index:3;">${d.project ? `<div class="work-brand">${d.client}</div>` : ''}<div class="work-client">${d.project || d.client}</div><div class="work-type">${d.type}</div></div></div>`;
   }).join('');
 
   if (filteredData.length > showCount) {
@@ -2691,11 +2703,11 @@ function toggleMore() {
 // ── 모달 ──────────────────────────────────────────
 function openModal(idx) {
   const d = allData[idx];
-  document.getElementById('modalIndustry').textContent = d.industry;
-  document.getElementById('modalTitle').textContent    = d.client;
+  document.getElementById('modalIndustry').textContent = d.project ? (d.industry ? d.client + ' · ' + d.industry : d.client) : d.industry;
+  document.getElementById('modalTitle').textContent    = d.project || d.client;
   document.getElementById('modalType').textContent     = d.type;
   document.getElementById('modalDesc').textContent     = d.desc;
-  document.getElementById('modalPhTitle').textContent  = d.client;
+  document.getElementById('modalPhTitle').textContent  = d.project || d.client;
   document.getElementById('modalPhType').textContent   = d.type;
 
   const tags = d.tags ? d.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
