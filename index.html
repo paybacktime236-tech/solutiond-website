@@ -730,14 +730,15 @@ nav {
   object-fit: contain;
   filter: grayscale(100%) opacity(0.45);
   transition: filter 0.25s;
-  display: none; /* PNG 업로드 후 display:block으로 변경 */
+  display: block;
 }
 
 .client-cell:hover img { filter: grayscale(0%) opacity(1); }
 .client-cell:hover { background: var(--bg); }
 
-/* 로고 없을 때 텍스트 */
+/* 로고 없을 때 텍스트 (로고 로드 실패 시 onerror로 표시) */
 .client-cell-text {
+  display: none;
   font-family: var(--serif);
   font-size: 14px;
   font-weight: 300;
@@ -1003,6 +1004,9 @@ footer {
 .filter-tab { font-size:11px; font-weight:400; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); padding:16px 24px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; white-space:nowrap; background:none; border-top:none; border-left:none; border-right:none; font-family:var(--sans); }
 .filter-tab:hover { color:var(--ink); }
 .filter-tab.active { color:var(--red); border-bottom-color:var(--red); }
+.filter-tabs--sub { border-bottom:none; padding-top:12px; padding-bottom:4px; }
+.filter-tab--sub { font-size:10px; padding:7px 15px; letter-spacing:1px; }
+.filter-tab--sub.active { color:var(--red); border-bottom-color:transparent; font-weight:600; }
 .loading-state { grid-column:1/-1; display:flex; align-items:center; justify-content:center; padding:80px; gap:12px; font-size:12px; font-weight:300; letter-spacing:2px; text-transform:uppercase; color:var(--dim); }
 .loading-dot { width:6px; height:6px; border-radius:50%; background:var(--red); animation:pulse 1.2s ease-in-out infinite; }
 .loading-dot:nth-child(2) { animation-delay:0.2s; }
@@ -2062,6 +2066,9 @@ footer {
   <div class="filter-tabs" id="filterTabs">
     <button class="filter-tab active" data-filter="all" onclick="filterWork('all', this)">All</button>
   </div>
+  <div class="filter-tabs filter-tabs--sub" id="categoryTabs">
+    <button class="filter-tab filter-tab--sub active" data-cat="all" onclick="filterByCategory('all', this)">All Types</button>
+  </div>
   <div class="work-grid" id="workGrid">
     <div class="loading-state">
       <div class="loading-dot"></div>
@@ -2079,28 +2086,35 @@ footer {
   <div class="clients-inner-wrap">
   <div class="clients-label" style="color:var(--red);font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;">Clients</div>
   <div class="clients-grid">
-    <!-- PNG 로고 파일 받으면 img src 채워주세요. 그 전까지 텍스트 표시 -->
-    <div class="client-cell"><img src="" alt="KT"><span class="client-cell-text">KT</span></div>
-    <div class="client-cell"><img src="" alt="SECUI"><span class="client-cell-text">SECUI</span></div>
-    <div class="client-cell"><img src="" alt="삼성바이오로직스"><span class="client-cell-text">삼성<br>바이오로직스</span></div>
-    <div class="client-cell"><img src="" alt="TONYMOLY"><span class="client-cell-text">TONYMOLY</span></div>
-    <div class="client-cell"><img src="" alt="D'LIVE"><span class="client-cell-text">D'LIVE</span></div>
-    <div class="client-cell"><img src="" alt="SK케미칼"><span class="client-cell-text">SK케미칼</span></div>
-    <div class="client-cell"><img src="" alt="보령제약"><span class="client-cell-text">보령제약</span></div>
-    <div class="client-cell"><img src="" alt="한국암웨이"><span class="client-cell-text">한국암웨이</span></div>
-    <div class="client-cell"><img src="" alt="SC제일은행"><span class="client-cell-text">SC제일은행</span></div>
-    <div class="client-cell"><img src="" alt="레이저옵텍"><span class="client-cell-text">레이저옵텍</span></div>
-    <div class="client-cell"><img src="" alt="콜마"><span class="client-cell-text">콜마</span></div>
-    <div class="client-cell"><img src="" alt="VISANG"><span class="client-cell-text">VISANG</span></div>
-    <div class="client-cell"><img src="" alt="이투스"><span class="client-cell-text">이투스</span></div>
-    <div class="client-cell"><img src="" alt="이감"><span class="client-cell-text">이감</span></div>
-    <div class="client-cell"><img src="" alt="전라남도청"><span class="client-cell-text">전라남도청</span></div>
-    <div class="client-cell"><img src="" alt="KDI정책대학원"><span class="client-cell-text">KDI<br>정책대학원</span></div>
-    <div class="client-cell"><img src="" alt="APEC기후센터"><span class="client-cell-text">APEC<br>기후센터</span></div>
-    <div class="client-cell"><img src="" alt="세종시"><span class="client-cell-text">세종시</span></div>
-    <div class="client-cell"><img src="" alt="한국도자재단"><span class="client-cell-text">한국도자재단</span></div>
-    <div class="client-cell"><img src="" alt="DRB동일"><span class="client-cell-text">DRB동일</span></div>
-    <div class="client-cell"><img src="" alt="교보타워"><span class="client-cell-text">교보타워</span></div>
+    <!-- 로고: logos/ 폴더 자동 로드. 실패 시 텍스트로 폴백 (png→svg→text) -->
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_kt.png" alt="KT" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">KT</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_samsungbio.png" alt="삼성바이오로직스" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">삼성<br>바이오로직스</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_sk.png" alt="SK케미칼" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">SK케미칼</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_tonymoly.png" alt="TONYMOLY" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">TONYMOLY</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_memebox.png" alt="미미박스" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">미미박스</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_boryung.png" alt="보령제약" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">보령제약</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_amway.png" alt="한국암웨이" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">한국암웨이</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_isu.png" alt="이수그룹" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">이수그룹</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_kukje.png" alt="국제약품" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">국제약품</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_etoos.png" alt="이투스교육" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">이투스</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_secui.png" alt="SECUI" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">SECUI</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_dlive.png" alt="D'LIVE" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">D'LIVE</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_laseroptek.png" alt="레이저옵텍" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">레이저옵텍</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_visang.png" alt="비상교육" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">비상교육</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_yigam.png" alt="이감" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">이감</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_kdi.png" alt="KDI정책대학원" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">KDI<br>정책대학원</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_Mimac.png" alt="대성마이맥" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">대성마이맥</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_daesung.png" alt="대성학원" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">대성학원</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_tirrlirr.png" alt="티르리르" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">티르리르</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_exonia.png" alt="엑소니아" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">엑소니아</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_purgo.png" alt="푸르고" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">푸르고</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_clipy.png" alt="클라이피" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">클라이피</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_unjeong.png" alt="운정한우" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">운정한우</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_jeonnam.png" alt="전라남도" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">전라남도</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_gwanak.png" alt="관악구" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">관악구</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_kgu.png" alt="경기대학교" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">경기대학교</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_gnepa.png" alt="경상남도경제진흥원" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">경상남도<br>경제진흥원</span></div>
+    <div class="client-cell"><img src="https://raw.githubusercontent.com/paybacktime236-tech/solutiond-website/main/logos/logo_pmjinji.png" alt="평화문화진지" onerror="if(this.dataset.f){this.style.display='none';this.nextElementSibling.style.display='block';}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}"><span class="client-cell-text">평화문화진지</span></div>
   </div>
   </div>
 </div>
@@ -2584,8 +2598,9 @@ const ITEMS_MORE  = 6;   // 더 보기 클릭 시 추가 개수
 // ── 상태 ──────────────────────────────────────────
 let allData       = [];
 let filteredData  = [];
-let currentFilter = 'all';
-let showCount     = ITEMS_FIRST;
+let currentFilter   = 'all';
+let currentCategory = 'all';
+let showCount       = ITEMS_FIRST;
 
 // ── CSV 파싱 ──────────────────────────────────────
 function parseCSV(text) {
@@ -2638,13 +2653,49 @@ function buildFilterTabs(data) {
   });
 }
 
-// ── 필터 ──────────────────────────────────────────
+// ── 종류(태그) 탭 생성 ────────────────────────────
+const CATEGORY_ORDER = ['Branding', 'Editorial', 'Promotion', 'Campaign', 'Package', 'Proposal', 'Exhibition'];
+function tagList(d) {
+  return d.tags ? d.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+}
+function buildCategoryTabs(data) {
+  const present = new Set();
+  data.forEach(d => tagList(d).forEach(t => present.add(t)));
+  const cats = CATEGORY_ORDER.filter(c => present.has(c));
+  const tabs = document.getElementById('categoryTabs');
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-tab filter-tab--sub';
+    btn.dataset.cat = cat;
+    btn.textContent = cat;
+    btn.onclick = () => filterByCategory(cat, btn);
+    tabs.appendChild(btn);
+  });
+}
+
+// ── 필터 (업종) ───────────────────────────────────
 function filterWork(filter, btn) {
-  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#filterTabs .filter-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   currentFilter = filter;
+  applyFilters();
+}
+
+// ── 필터 (종류) ───────────────────────────────────
+function filterByCategory(cat, btn) {
+  document.querySelectorAll('#categoryTabs .filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  currentCategory = cat;
+  applyFilters();
+}
+
+// ── 두 필터 함께 적용 (AND) ───────────────────────
+function applyFilters() {
   showCount = ITEMS_FIRST;
-  filteredData = filter === 'all' ? [...allData] : allData.filter(d => d.industry === filter);
+  filteredData = allData.filter(d =>
+    (currentFilter === 'all' || d.industry === currentFilter) &&
+    (currentCategory === 'all' || tagList(d).includes(currentCategory))
+  );
   renderGrid();
 }
 
@@ -2783,6 +2834,7 @@ async function loadSheets() {
     allData      = parseCSV(text);
     filteredData = [...allData];
     buildFilterTabs(allData);
+    buildCategoryTabs(allData);
     renderGrid();
   } catch(e) {
     document.getElementById('workGrid').innerHTML =
