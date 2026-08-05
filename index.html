@@ -1021,8 +1021,9 @@ footer {
 .modal-mockup svg { width: 100%; max-height: 320px; object-fit: contain; }
 
 /* -- FILTER TABS -- */
-.filter-tabs { display:flex; gap:0; padding:0 80px; border-bottom:1px solid var(--rule); overflow-x:auto; justify-content: center; }
-.filter-tab { font-size:11px; font-weight:400; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); padding:16px 24px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; white-space:nowrap; background:none; border-top:none; border-left:none; border-right:none; font-family:var(--sans); }
+.filter-tabs { display:flex; gap:0; padding:0 80px; border-bottom:1px solid var(--rule); overflow-x:auto; justify-content: center; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; touch-action: pan-x; overscroll-behavior-x: contain; scrollbar-width: none; }
+.filter-tabs::-webkit-scrollbar { display: none; }
+.filter-tab { font-size:11px; font-weight:400; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); padding:16px 24px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; white-space:nowrap; background:none; border-top:none; border-left:none; border-right:none; font-family:var(--sans); scroll-snap-align: start; }
 .filter-tab:hover { color:var(--ink); }
 .filter-tab.active { color:var(--red); border-bottom-color:var(--red); }
 .filter-tabs--sub { border-bottom:none; padding-top:12px; padding-bottom:4px; }
@@ -1815,7 +1816,7 @@ footer {
 
   /* HERO */
   .hero { padding-top: 92px; }
-  .hero-banner { height: 56vw; min-height: 220px; }
+  .hero-banner { height: 84vw; min-height: 330px; }
   .hero-slide-copy { max-width: 52%; }
   .hero-slide-text { font-size: clamp(14px, 3.8vw, 20px); }
   .hero-slide[data-slide="0"] .hero-slide-copy { left: 25%; top: 50%; transform: translateY(-50%); }
@@ -1839,8 +1840,8 @@ footer {
   /* WORK */
   .work-header { padding: 48px 24px 32px; max-width: 100%; }
   .work-headline { font-size: 26px; }
-  .work-grid { grid-template-columns: 1fr; border-left: none; }
-  .work-item { max-height: none; aspect-ratio: 4/3; border-right: none; }
+  .work-grid { grid-template-columns: repeat(2, 1fr); border-left: 1px solid var(--rule); }
+  .work-item { max-height: none; aspect-ratio: 4/3; }
   .work-more-wrap { padding: 32px 24px; }
   .filter-tabs { padding: 0 24px; justify-content: flex-start; }
 
