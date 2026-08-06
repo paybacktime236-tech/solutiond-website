@@ -2829,8 +2829,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDi
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/' + SHEET_ID + '/pub?gid=0&single=true&output=csv';
 
 const PROXIES = [
-  u => 'https://corsproxy.io/?' + encodeURIComponent(u),
+  u => u,  // 1) 직접 시도 (구글이 CORS 허용 시 프록시 불필요)
+  u => 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(u),
   u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+  u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
   u => 'https://thingproxy.freeboard.io/fetch/' + u,
 ];
 
@@ -2838,7 +2840,7 @@ async function fetchWithFallback(url) {
   for (const makeProxy of PROXIES) {
     try {
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 6000);
+      const timer = setTimeout(() => controller.abort(), 8000);
       const res = await fetch(makeProxy(url), { signal: controller.signal });
       clearTimeout(timer);
       if (res.ok) {
