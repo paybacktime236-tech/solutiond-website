@@ -2856,7 +2856,14 @@ async function fetchWithFallback(url) {
 
 async function loadSheets() {
   try {
-    const text   = await fetchWithFallback(CSV_URL);
+    // 1) 저장소 data.csv 먼저 (깃허브 액션이 시트를 구워둠 · 프록시 불필요)
+    let text;
+    try {
+      const localRes = await fetch('data.csv?t=' + Date.now());
+      if (localRes.ok) { const t = await localRes.text(); if (t && t.length > 10 && /client/i.test(t.slice(0,200))) text = t; }
+    } catch(e) {}
+    // 2) data.csv 없거나 실패하면 구글 시트 직접/프록시 폴백
+    if (!text) text = await fetchWithFallback(CSV_URL);
     allData      = parseCSV(text);
     filteredData = [...allData];
     buildFilterTabs(allData);
